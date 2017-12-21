@@ -6,6 +6,11 @@ class Gear
     @cog = cog
   end
 
+  # 破滅への道
+  # def ratio
+  #   @chainring / @cog.to_f
+  # end
+
   def ratio
     chainring / cog.to_f
   end
