@@ -27,3 +27,60 @@
   - コードに変更を加える人が、上記の品質を自然と保つようなコードになっている
 
 ## 2.2 単一の責任を持つクラスをつくる
+
+### クラスが単一責任かどうか見極める
+
+クラスの持つメソッドを質問に言い換えたときに、意味を成す質問になっているべきです。
+
+たとえば、
+
+- 「Gearさん、あなたの比を教えてくれませんか？」 :ok_woman:
+- 「Gearさん、あなたのgear_inchesを教えてくれませんか？」 :worried:
+- 「Gearさん、あなたのタイヤ（のサイズ）を教えてくれませんか？」 :innocent:
+
+## 2.3 変更を歓迎するコードを書く
+
+### データではなく、振る舞いに依存する
+
+データへのアクセスの方法
+
+1. インスタンス変数を直接参照する方法
+2. インスタンス変数をアクセサメソッドで包み隠す方法
+
+```rb
+class Gear
+  def initialize(chainring, cog)
+    @chainring = chainring
+    @cog = cog
+  end
+
+  def ratio
+    # インスタンス変数を直接参照しているので、破滅への道
+    @chainring / @cog.to_f
+  end
+end
+```
+
+```rb
+class Gear
+  attr_reader :chainring, :cog
+
+  def initialize(chainring, cog)
+    @chainring = chainring
+    @cog = cog
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+end
+```
+
+```rb
+# attr_readerによるデフォルトの実装
+def cog
+  @cog
+end
+```
+
+**コグはデータ（どこからでも参照される）から振る舞い（1ヶ所で定義される）へと変わります。**
